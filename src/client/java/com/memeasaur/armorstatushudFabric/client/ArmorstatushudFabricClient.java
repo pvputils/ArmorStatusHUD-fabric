@@ -3,11 +3,10 @@ package com.memeasaur.armorstatushudFabric.client;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
-import net.minecraft.resources.Identifier;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.network.chat.Component;
 import org.slf4j.LoggerFactory;
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class ArmorstatushudFabricClient implements ClientModInitializer {
     static HudConfig config = new HudConfig();
@@ -15,9 +14,9 @@ public class ArmorstatushudFabricClient implements ClientModInitializer {
     @Override public void onInitializeClient() {
         try { config = HudConfig.load(); }
         catch (Exception e) { LoggerFactory.getLogger("armorstatushud").error("Cannot load armorstatushud.json; using defaults without overwriting the file", e); }
-        HudElementRegistry.addLast(Identifier.fromNamespaceAndPath("armorstatushud-fabric", "equipment"), (graphics, delta) -> ArmorHud.render(graphics));
+        HudRenderCallback.EVENT.register((graphics, delta) -> ArmorHud.render(graphics));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (openConfig) { openConfig = false; client.gui.setScreen(new HudConfigScreen()); }
+            if (openConfig) { openConfig = false; client.setScreen(new HudConfigScreen()); }
         });
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registry) -> dispatcher.register(literal("armorstatus")
             .executes(context -> { openConfig = true; return 1; })
