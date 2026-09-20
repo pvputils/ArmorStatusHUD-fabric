@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "armorstatushud-fabric",
+  "version": "${version}",
+  "name": "ArmorStatusHUD",
+  "description": "Displays equipped armor and held items with configurable durability, colors, and HUD positioning. Fabric port of bspkrs ArmorStatusHUD.",
+  "authors": [
+    "bspkrs (original mod)",
+    "memeasaur (Fabric port)"
+  ],
+  "contact": {},
+  "license": "CC-BY-NC-SA-3.0",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-datagen": [
+      "com.memeasaur.armorstatushudFabric.client.ArmorstatushudFabricDataGenerator"
+    ],
+    "client": [
+      "com.memeasaur.armorstatushudFabric.client.ArmorstatushudFabricClient"
+    ],
+    "main": [
+      "com.memeasaur.armorstatushudFabric.ArmorstatushudFabric"
+    ]
+  },
+  "mixins": [
+    "armorstatushud-fabric.mixins.json",
+    {
+      "config": "armorstatushud-fabric.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}",
+    "java": ">=25"
+  }
+}
